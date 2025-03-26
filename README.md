@@ -1,4 +1,4 @@
-# ✈️ AI Travel Itinerary Planner
+# ✈️🚙🏨GetGetPlaces - From idea to itinerary — AI-crafted travel made effortless.
 
 Your personal AI agent to plan smart, weather-aware, budget-friendly trips — effortlessly.
 
