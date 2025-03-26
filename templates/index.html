@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel AI</title>
+    <style>
+        .error {
+            color: red;
+            display: none;
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+            margin-bottom: 5px;
+        }
+        input {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Travel AI</h1>
+    <form method="post" action="/" onsubmit="return validateForm()">
+        <label for="text_input">Free Text (e.g., "Cheap trip to Paris with good food"):</label>
+        <input type="text" id="text_input" name="text_input"><br>
+
+        <strong>OR</strong><br>
+
+        <label for="destinations">Destinations (comma-separated, e.g., London, Tokyo):</label>
+        <input type="text" id="destinations" name="destinations"><br>
+        <span id="destination-error" class="error">Please provide either a free-text input or a destination.</span><br>
+
+        <label for="budget">Budget ($):</label>
+        <input type="number" id="budget" name="budget" step="0.01" min="0.01" required><br>
+        <span id="budget-error" class="error">Budget must be a positive number.</span><br>
+
+        <label for="pickUpDate">Start Date:</label>
+        <input type="date" id="pickUpDate" name="pickUpDate" min="2025-03-25" required><br>
+        <span id="pickup-date-error" class="error">Start date must be today or in the future.</span><br>
+
+        <label for="pickUpTime">Pick-up Time:</label>
+        <input type="time" id="pickUpTime" name="pickUpTime" value="10:00" required><br>
+
+        <label for="preferredDays">Number of Days:</label>
+        <input type="number" id="preferredDays" name="preferredDays" min="1" step="1" required placeholder="e.g., 2 for a 2-day plan"><br>
+        <span id="preferred-days-error" class="error">Number of days must be a positive number.</span><br>
+
+        <input type="submit" value="Plan">
+        <input type="reset" value="Clear">
+    </form>
+
+    <script>
+        function validateForm() {
+            let isValid = true;
+
+            // Reset all error messages
+            document.querySelectorAll('.error').forEach(error => {
+                error.style.display = 'none';
+            });
+
+            // Validate text_input or destinations
+            const textInput = document.getElementById("text_input").value.trim();
+            const destinations = document.getElementById("destinations").value.trim();
+            const destinationError = document.getElementById("destination-error");
+            if (!textInput && !destinations) {
+                destinationError.style.display = "block";
+                isValid = false;
+            }
+
+            // Validate budget
+            const budget = parseFloat(document.getElementById("budget").value);
+            const budgetError = document.getElementById("budget-error");
+            if (isNaN(budget) || budget <= 0) {
+                budgetError.style.display = "block";
+                isValid = false;
+            }
+
+            // Validate start date
+            const pickUpDate = document.getElementById("pickUpDate").value;
+            const pickUpDateError = document.getElementById("pickup-date-error");
+
+            const today = new Date("2025-03-25"); // Current date as per the system
+            const pickUp = new Date(pickUpDate);
+
+            if (pickUp < today) {
+                pickUpDateError.style.display = "block";
+                isValid = false;
+            }
+
+            // Validate preferred days
+            const preferredDays = document.getElementById("preferredDays").value.trim();
+            const preferredDaysError = document.getElementById("preferred-days-error");
+            const days = parseInt(preferredDays);
+            if (isNaN(days) || days <= 0) {
+                preferredDaysError.style.display = "block";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
+</body>
+</html>

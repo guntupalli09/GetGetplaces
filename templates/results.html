@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel Plans for {{ destination }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .plan {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .day {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        .activity {
+            margin-left: 40px;
+            margin-bottom: 10px;
+        }
+        .details {
+            margin-left: 60px;
+        }
+        .total-cost {
+            font-weight: bold;
+            color: #2ecc71;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Travel Plans for {{ destination }}</h1>
+    <p>Budget: ${{ budget }}</p>
+
+    {% if plans %}
+        {% for plan in plans %}
+            <div class="plan">
+                <h2>{{ plan.days }}-Day Plan (Total Cost: ${{ plan.total_cost | round(2) }})</h2>
+                <p><strong>Hotel:</strong> {{ plan.hotel.name }} (Rating: {{ plan.hotel.rating }}, Cost per night: ${{ plan.hotel.price | round(2) }})</p>
+                {% if plan.car %}
+                    <p><strong>Car:</strong> {{ plan.car.name }} from {{ plan.car.company }} (Rating: {{ plan.car.rating }}, Daily Cost: ${{ plan.car.price | round(2) }})</p>
+                {% else %}
+                    <p><strong>Car:</strong> No car selected (travel on foot or public transport).</p>
+                {% endif %}
+
+                {% for day in plan.schedule %}
+                    <div class="day">
+                        <h3>Day {{ day.day }} ({{ day.date }}) - Daily Cost: ${{ day.daily_cost | round(2) }}</h3>
+                        {% for activity in day.activities %}
+                            <div class="activity">
+                                <p><strong>{{ activity.time }} - {{ activity.activity }}</strong></p>
+                                <div class="details">
+                                    <p><strong>Name:</strong> {{ activity.details.name }}</p>
+                                    <p><strong>Location:</strong> {{ activity.details.location }}</p>
+                                    <p><strong>Distance:</strong> {{ activity.details.distance | round(2) }} km</p>
+                                    <p><strong>Rating:</strong> {{ activity.details.rating }}</p>
+                                    {% if activity.details.reviews %}
+                                        <p><strong>Reviews:</strong></p>
+                                        <ul>
+                                            {% for review in activity.details.reviews %}
+                                                <li>{{ review }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                    {% if activity.details.weather %}
+                                        <p><strong>Weather:</strong> {{ activity.details.weather }}</p>
+                                    {% endif %}
+                                    <p><strong>Cost:</strong> ${{ activity.details.cost | round(2) }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="error">No plans could be generated within your budget.</p>
+    {% endif %}
+</body>
+</html>
