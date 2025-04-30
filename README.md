@@ -10,6 +10,8 @@ Your personal AI agent to plan smart, weather-aware, budget-friendly trips — e
 - **Price Prediction** — ARIMA-based future price forecasts
 - **Intelligent Recommendations** — Machine learning model for tailored suggestions
 - **Database-Ready** — PostgreSQL backend for trips, users, hotels & cars
+# Homepage
+![Homepage Screenshot](assets-GGP/Homepage-GGP.png)
 
 ## 🚀 Example
 
